@@ -1,0 +1,78 @@
+local Library = {}
+
+function Library:CreateWindow(name)
+    local ScreenGui = Instance.new("ScreenGui")
+    local Main = Instance.new("Frame")
+    local Title = Instance.new("TextLabel")
+    local Container = Instance.new("Frame")
+    local UIListLayout = Instance.new("UIListLayout")
+    
+    ScreenGui.Parent = game.CoreGui
+    
+    Main.Name = "Main"
+    Main.Size = UDim2.new(0, 300, 0, 350)
+    Main.Position = UDim2.new(0.5, -150, 0.5, -175)
+    Main.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    Main.Parent = ScreenGui
+    
+    Title.Name = "Title"
+    Title.Size = UDim2.new(1, 0, 0, 30)
+    Title.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    Title.Text = name
+    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Title.Parent = Main
+    
+    Container.Name = "Container"
+    Container.Size = UDim2.new(1, -20, 1, -40)
+    Container.Position = UDim2.new(0, 10, 0, 35)
+    Container.BackgroundTransparency = 1
+    Container.Parent = Main
+    
+    UIListLayout.Parent = Container
+    UIListLayout.Padding = UDim.new(0, 5)
+    
+    local Window = {}
+    
+    function Window:AddButton(text, callback)
+        local Button = Instance.new("TextButton")
+        Button.Size = UDim2.new(1, 0, 0, 30)
+        Button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        Button.Text = text
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.Parent = Container
+        
+        Button.MouseButton1Click:Connect(callback)
+    end
+    
+    function Window:AddToggle(text, callback)
+        local Toggle = Instance.new("Frame")
+        local Button = Instance.new("TextButton")
+        local Status = Instance.new("Frame")
+        
+        Toggle.Size = UDim2.new(1, 0, 0, 30)
+        Toggle.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+        Toggle.Parent = Container
+        
+        Button.Size = UDim2.new(1, 0, 1, 0)
+        Button.BackgroundTransparency = 1
+        Button.Text = text
+        Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+        Button.Parent = Toggle
+        
+        Status.Size = UDim2.new(0, 20, 0, 20)
+        Status.Position = UDim2.new(1, -25, 0.5, -10)
+        Status.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+        Status.Parent = Toggle
+        
+        local enabled = false
+        Button.MouseButton1Click:Connect(function()
+            enabled = not enabled
+            Status.BackgroundColor3 = enabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(255, 0, 0)
+            callback(enabled)
+        end)
+    end
+    
+    return Window
+end
+
+return Library
